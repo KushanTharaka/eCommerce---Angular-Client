@@ -1,0 +1,23 @@
+<nav class="navbar sticky-top navbar-expand-sm navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 px-3">Snap Buy</span>
+    <button 
+        class="navbar-toggler" type="button" 
+        data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+        aria-controls="navbarNav" aria-expanded="navbarNav"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item-active">
+                <a routerLink="./adminProducts" routerLinkActive="active" class="nav-link">Products</a>
+            </li>
+            <li class="nav-item-active">
+                <a routerLink="#" routerLinkActive="active" class="nav-link">Register</a>
+            </li>
+            <li class="nav-item-active">
+                <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
