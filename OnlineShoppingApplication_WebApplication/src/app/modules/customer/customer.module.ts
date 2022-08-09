@@ -6,6 +6,9 @@ import { CustomerProductsComponent } from './customerComponents/customer-product
 import { CustomerShoppingCartComponent } from './customerComponents/customer-shopping-cart/customer-shopping-cart.component';
 import { CustomerDashboardComponent } from './customerComponents/customer-dashboard/customer-dashboard.component';
 import { CustomerNavbarComponent } from './customerComponents/customer-navbar/customer-navbar.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CustomerPurchaseHistoryComponent } from './customerComponents/customer-purchase-history/customer-purchase-history.component';
+import { CustomerCheckoutComponent } from './customerComponents/customer-checkout/customer-checkout.component';
 
 
 @NgModule({
@@ -13,11 +16,14 @@ import { CustomerNavbarComponent } from './customerComponents/customer-navbar/cu
     CustomerProductsComponent,
     CustomerShoppingCartComponent,
     CustomerDashboardComponent,
-    CustomerNavbarComponent
+    CustomerNavbarComponent,
+    CustomerPurchaseHistoryComponent,
+    CustomerCheckoutComponent
   ],
   imports: [
     CommonModule,
-    CustomerRoutingModule
+    CustomerRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class CustomerModule { }
