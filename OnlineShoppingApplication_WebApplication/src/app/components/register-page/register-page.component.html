@@ -1,36 +1,130 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="text-center">
-                    <h1>Register</h1>
-                    <h6>Hi, Welcome New User!</h6>
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Welcome to SnapBuy</h3>
+            <form [formGroup]="registerForm" autocomplete="off" (ngSubmit)="onSubmit()">
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="firstName">First Name</label>
+                    <input type="text" id="firstName" class="form-control" formControlName="fName" class="form-control form-control-lg" />
+                    <small *ngIf="registerForm.get('fName')?.invalid && registerForm.get('fName')?.touched" class="text-danger">First Name is required!</small>                  
+                  </div>
+
                 </div>
-                <form>
-                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                        <div class="mb-3">
-                          <label for="exampleInputEmail1" class="form-label">Email address</label>
-                          <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">First Name</label>
-                            <input type="text" class="form-control" formControlName="firstName" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Last Name</label>
-                            <input type="text" class="form-control" formControlName="lastName" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                          <label for="exampleInputPassword1" class="form-label">Password</label>
-                          <input type="password" class="form-control" formControlName="password" id="exampleInputPassword1">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Register</button>
-                      </form>
-                      <div class="card-footer text-right">
-                        <small><a routerLink="../login">Login</a></small>
-                    </div>
-                </form>
-            </div>
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="lastName">Last Name</label>
+                    <input type="text" id="lastName" class="form-control" formControlName="lName" class="form-control form-control-lg" />
+                    <small *ngIf="registerForm.get('lName')?.invalid && registerForm.get('lName')?.touched" class="text-danger">Second Name is required!</small>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+
+                  <h6 class="mb-2 pb-1">Title: </h6>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="title" id="mrTitle"
+                      value="Mr" formControlName="title" checked />
+                    <label class="form-check-label" for="mrTitle">Mr</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="title" id="mrsTitle"
+                      value="Mrs" formControlName="title"/>
+                    <label class="form-check-label" for="mrsTitle">Mrs</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="title" id="revTitle"
+                      value="Rev" formControlName="title"/>
+                    <label class="form-check-label" for="revTitle">Rev</label>
+                  </div>
+                  <small *ngIf="registerForm.get('title')?.invalid && registerForm.get('title')?.touched" class="text-danger">Title is required!</small>
+                </div>
+                <div class="col-md-6 mb-4">
+
+                  <h6 class="mb-2 pb-1">Gender: </h6>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="maleGender"
+                      value="Male" formControlName="gender" checked />
+                    <label class="form-check-label" for="maleGender">Male</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="femaleGender"
+                      value="Female" formControlName="gender"/>
+                    <label class="form-check-label" for="femaleGender">Female</label>
+                  </div>                  
+                  <small *ngIf="registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched" class="text-danger">Gender is required!</small>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="addressField">Address</label>
+                    <input type="text" id="addressField" class="form-control" formControlName="address" class="form-control form-control-lg" />
+                    <small *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched" class="text-danger">Home Address is required!</small>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="zip">Zip Code</label>
+                    <input type="text" type="tel" id="zip" class="form-control" formControlName="zipCode" class="form-control form-control-lg" />
+                    <small *ngIf="registerForm.get('zipCode')?.invalid && registerForm.get('zipCode')?.touched" class="text-danger">Zip Code is required!</small>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="emailAddress">Email</label>
+                    <input type="email" id="emailAddress" class="form-control" formControlName="email" class="form-control form-control-lg" />
+                    <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">Valid email is required!</small>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="passwordField">Password</label>
+                    <input type="password" id="password" class="form-control" formControlName="password" class="form-control form-control-lg" />
+                    <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger">Password is required!</small>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="mt-0 pt-0">
+                <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary">Register</button>
+                <input autocomplete="false" name="hidden" type="text" style="display:none;">
+              </div>
+
+            </form>
+            <div class="card-footer text-right">
+              <small><a routerLink="../login">Login</a></small>
+          </div>
+          </div>
         </div>
+      </div>    
     </div>
-</div>
+  </div>
+</section>

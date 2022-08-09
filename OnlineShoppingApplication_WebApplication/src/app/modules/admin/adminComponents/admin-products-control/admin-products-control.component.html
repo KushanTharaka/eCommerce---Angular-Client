@@ -1,1 +1,229 @@
-<p>admin-products-control works!</p>
+<div class="jumbotron pt-3">
+    <h1 class="display-4 text-center">Products</h1>
+</div>
+
+<div class="section m-5">
+    <div class="row">
+        <!-- <div class="col-md-4">
+            
+            <div class="card rounded-3 bg-white">
+                <div class="card-body">
+                    <div class="container">
+                        <form novalidate autocomplete="off">
+                            <input type="hidden" name="paymentDetailId" />
+                            <div class="form-group">
+                                <label>Category Name</label>
+                                <input class="form-control form-control-sm mt-3 bg-light" name="categoryName" required>
+                            </div>
+                            <div class="form-group pt-3">
+                                <button class="btn btn-info btn-sm btn-block" type="submit">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    
+        </div> -->
+        <div class="col-md-9">
+            <div class="input-group mb-4">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" #searchTerm />
+                <button type="button" (click)="searchItem(searchTerm.value)" class="btn btn-outline-primary">search</button>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="category"
+                #selectedCategory
+                (change)="getCategoryProducts(selectedCategory.value)">
+              <option value="All_Products">Choose Category</option>
+              <option *ngFor="let each of eachCategory" [value]="each.categoryId">{{each.name}}
+                <!-- <input type="hidden" [value]="each.categoryId"> -->
+              </option>        
+            </select>
+        </div>
+        <div class="col-md-12">         
+            <div class="Item bg-white rounded-3">
+                <table class="table table-hover table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Details</th>
+                            <th>Image</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th><button class="btn btn-info btn-sm btn-block" (click)="clearForm()" data-bs-toggle="modal" data-bs-target="#productModal" data-bs-whatever="@getbootstrap">Add New</button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let each of eachProduct">
+                            <td class="col-md-2">{{each.name}}</td>
+                            <td class="col-md-5">{{each.details}}</td>
+                            <td class="col-md-1"><img [src]="each.images" class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;"></td>                               
+                            <td class="col-md-1">{{each.quantity}}</td>
+                            <td class="col-md-1">Rs. {{each.price}}</td>
+                            <td class="col-md-1">{{each.category.name}}</td>
+                            <td class="col-md-1">
+                                <a (click)="getItemDetails(each)" style="color: #2f2e2e;" data-bs-toggle="modal" data-bs-target="#updateProductModal" data-bs-whatever="@getbootstrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                    </svg>
+                                </a>
+                                <a (click)="deleteProduct(each.productId)" style="color: #2f2e2e; padding-left: 20px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                      <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                    </svg>
+                                </a> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<div class="modal fade " id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productModalLabel">Add New Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form [formGroup]="addProductForm" autocomplete="off" (ngSubmit)="addProduct()">
+        <div class="modal-body">
+          
+            <div class="row">
+                <label for="nameField" class="col-form-label">Product Name:</label>
+                <input type="text" formControlName="name" placeholder="Name" class="form-control" id="nameField" required maxlength="50" minlength="5">
+                <small *ngIf="addProductForm.get('name')?.invalid && addProductForm.get('name')?.touched" class="text-danger">Product Name is required!</small>
+            </div>
+            <div class="row mt-2">
+                <label for="descriptionField" class="col-form-label">Product Description:</label>
+                <textarea formControlName="description" placeholder="Description" class="form-control" id="descriptionField" required maxlength="200" minlength="20"></textarea>
+                <small *ngIf="addProductForm.get('description')?.invalid && addProductForm.get('description')?.touched" class="text-danger">Product Description is required!</small>
+            </div>
+            <div class="row mt-2">
+                <label for="imgLinkField" class="col-form-label">Product Image:</label>
+                <input type="text" formControlName="imgLink" placeholder="Image Link" class="form-control" id="imgLinkField" required>
+                <small *ngIf="addProductForm.get('imgLink')?.invalid && addProductForm.get('imgLink')?.touched" class="text-danger">Product Link is required!</small>
+            </div>
+            <div class="row">
+                <div class="col-md-6">                   
+                    <div class="mb-3 mt-4">
+                        <label for="quantity" class="col-form-label">Quantity:</label>
+                        <div style="margin-left: 7px" class="btn-group" role="group">
+                            <input type="number" formControlName="qty" class="form-control" style="max-width: 70px; max-height: 50px;" id="qtyField" required><!--<p style="padding-top: 8px; padding-left: 8px;">/ {{productObj.quantity}}</p> -->
+                        </div>
+                    </div>
+                    <small *ngIf="addProductForm.value.qty < 1 ||  addProductForm.get('qty')?.invalid && addProductForm.get('qty')?.touched" class="text-danger">Enter valid Quantity!</small>
+                </div>
+                <div class="col-md-6 mt-4">
+                    <div class="mb-3">
+                        <label for="priceField" class="col-form-label">Price:</label>
+                        <div style="margin-left: 7px" class="btn-group" role="group">
+                            <input type="number" formControlName="price" class="form-control" style="max-width: 70px; max-height: 50px;" id="priceField" required>
+                            <!-- <label type="text" class="form-control" id="productPrice" style="height: auto;">Rs. {{productObj.price}}</label> -->
+                        </div>
+                    </div>
+                    <small *ngIf="addProductForm.value.price < 1 ||  addProductForm.get('price')?.invalid && addProductForm.get('price')?.touched" class="text-danger">Enter valid Price!</small>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <label for="categoryMenu" class="col-form-label col-md-2">Category:</label>
+                    <div style="margin-left: 7px" class="btn-group col-md-9" role="group">
+                        <select class="form-select" id="categoryMenu"
+                            #selectedCategory formControlName="category">
+                            <option *ngFor="let each of eachCategory" [value]="each.categoryId">{{each.name}}</option>        
+                        </select>
+                    </div>
+                    <small *ngIf="addProductForm.get('category')?.invalid && addProductForm.get('category')?.touched" class="text-danger">Category is required!</small>
+                </div>
+            </div>                                     
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button [disabled]="addProductForm.invalid" type="submit" data-bs-dismiss="modal" class="btn btn-primary">Add Product</button> 
+        </div>
+      </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade " id="updateProductModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateProductModalLabel">Update Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form [formGroup]="updateProductForm" autocomplete="off" (ngSubmit)="updateProduct()">
+        <div class="modal-body">
+          
+            <div class="row">
+                <label for="nameField" class="col-form-label">Product Name:</label>
+                <input type="text" formControlName="name" placeholder="Name" class="form-control" id="nameField" required maxlength="50" minlength="5">
+                <small *ngIf="updateProductForm.get('name')?.invalid && updateProductForm.get('name')?.touched" class="text-danger">Product Name is required!</small>
+            </div>
+            <div class="row mt-2">
+                <label for="descriptionField" class="col-form-label">Product Description:</label>
+                <textarea formControlName="description" placeholder="Description" class="form-control" id="descriptionField" required maxlength="200" minlength="20"></textarea>
+                <small *ngIf="updateProductForm.get('description')?.invalid && updateProductForm.get('description')?.touched" class="text-danger">Product Description is required!</small>
+            </div>
+            <div class="row mt-2">
+                <label for="imgLinkField" class="col-form-label">Product Image:</label>
+                <input type="text" formControlName="imgLink" placeholder="Image Link" class="form-control" id="imgLinkField" required>
+                <small *ngIf="updateProductForm.get('imgLink')?.invalid && updateProductForm.get('imgLink')?.touched" class="text-danger">Product Link is required!</small>
+            </div>
+            <div class="row">
+                <div class="col-md-6">                   
+                    <div class="mb-3 mt-4">
+                        <label for="quantity" class="col-form-label">Quantity:</label>
+                        <div style="margin-left: 7px" class="btn-group" role="group">
+                            <input type="number" formControlName="qty" class="form-control" style="max-width: 70px; max-height: 50px;" id="qtyField" required><!--<p style="padding-top: 8px; padding-left: 8px;">/ {{productObj.quantity}}</p> -->
+                        </div>
+                    </div>
+                    <small *ngIf="updateProductForm.value.qty < 1 ||  updateProductForm.get('qty')?.invalid && updateProductForm.get('qty')?.touched" class="text-danger">Enter valid Quantity!</small>
+                </div>
+                <div class="col-md-6 mt-4">
+                    <div class="mb-3">
+                        <label for="priceField" class="col-form-label">Price:</label>
+                        <div style="margin-left: 7px" class="btn-group" role="group">
+                            <input type="number" formControlName="price" class="form-control" style="max-width: 80px; max-height: 50px;" id="priceField" required>
+                            <!-- <label type="text" class="form-control" id="productPrice" style="height: auto;">Rs. {{productObj.price}}</label> -->
+                        </div>
+                    </div>
+                    <small *ngIf="updateProductForm.value.price < 1 ||  updateProductForm.get('price')?.invalid && updateProductForm.get('price')?.touched" class="text-danger">Enter valid Price!</small>
+                </div>
+            </div>
+            <!-- <div class="row mt-2">
+                <div class="col-md-12">
+                    <label for="categoryMenu" class="col-form-label col-md-5">Selected Category:</label>
+                    <div style="margin-left: 7px" class="btn-group col-md-5" role="group">
+                        <label type="text" class="form-control" style="max-width: 200px; max-height: 50px;" id="categoryField">{{updateProductObj.CategoryName}}</label>
+                    </div>
+                </div>
+            </div>   -->
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <label for="categoryMenu" class="col-form-label col-md-2">Category:</label>
+                    <div style="margin-left: 7px" class="btn-group col-md-9" role="group">
+                        <select class="form-select" id="categoryMenu"
+                            #selectedCategory formControlName="category">
+                            <!-- <option value="All_Products">{{updateProductObj.Category.name}}</option>  -->
+                            <option *ngFor="let each of eachCategory" [value]="each.categoryId">{{each.name}}</option>        
+                        </select>
+                    </div>
+                    <!-- <small *ngIf="updateProductForm.get('category')?.invalid && updateProductForm.get('category')?.touched" class="text-danger">Category is required!</small> -->
+                </div>
+            </div>                                     
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button [disabled]="updateProductForm.invalid" type="submit" data-bs-dismiss="modal" class="btn btn-primary">Update Product</button> 
+        </div>
+      </form>
+      </div>
+    </div>
+</div>

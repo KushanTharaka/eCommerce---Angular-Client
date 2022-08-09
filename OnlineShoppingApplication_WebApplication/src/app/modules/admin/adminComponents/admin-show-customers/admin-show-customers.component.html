@@ -1,0 +1,46 @@
+<div class="jumbotron pt-3">
+    <h1 class="display-4 text-center">Customers</h1>
+</div>
+
+<div class="section m-5">
+    <div class="row">
+        
+        <div class="col-md-12">
+            <div class="input-group mb-4">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" #searchTerm/>
+                <button type="button" (click)="searchCustomer(searchTerm.value)" class="btn btn-outline-primary">search</button>
+            </div>
+        </div>
+
+        <div class="col-md-12">         
+            <div style="box-shadow: 5px 10px 18px #888888;" class="Item bg-white rounded-3">
+                <table class="table table-hover table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Zip Code</th>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let each of eachCustomer">
+                            <td class="col-md-1">{{each.id}}</td>
+                            <td class="col-md-2">{{each.customer.title + " " + each.customer.firstName + " " + each.customer.lastName}}</td>
+                            <td class="col-md-1">{{each.customer.gender}}</td>
+                            <td class="col-md-2">{{each.email}}</td>                               
+                            <td class="col-md-5">{{each.customer.address}}</td>
+                            <td class="col-md-1">{{each.customer.zipCode}}</td>                 
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+

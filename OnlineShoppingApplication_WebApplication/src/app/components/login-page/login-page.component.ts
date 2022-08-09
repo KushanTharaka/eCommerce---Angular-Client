@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LoginAuthService } from 'src/app/services/login-auth.service';
 import { LoginDetails_Model } from 'src/app/services/models/login.model';
 import { HttpClient } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-login-page',
@@ -12,17 +13,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LoginPageComponent implements OnInit {
 
-  // loginForm = new FormGroup({
-  //   email: new FormControl(''),
-  //   password: new FormControl(''),
-  // });
-
-  uRole: any;
-
   public loginForm !: FormGroup;
   public loginObj  = new LoginDetails_Model();
 
-  constructor(private auth: LoginAuthService, private router: Router, private formBuilder: FormBuilder, private http: HttpClient) { }
+  constructor(private auth: LoginAuthService, 
+    private router: Router, 
+    private formBuilder: FormBuilder, 
+    private http: HttpClient, 
+    private jwtHelper: JwtHelperService) { }
 
   ngOnInit(): void {
     if(this.auth.isAdminLoggedIn())
@@ -35,55 +33,48 @@ export class LoginPageComponent implements OnInit {
     }
 
     this.loginForm = this.formBuilder.group({
-      email: ["", Validators.compose([Validators.required,Validators.email])],
-      password: ["", Validators.required],
+      email: [null, Validators.compose([Validators.required,Validators.email])],
+      password: [null, Validators.required],
   });
 
   }
 
   onSubmit(): void {
-    // if (this.loginForm.valid) {
-    //   this.auth.login(this.loginForm.value).subscribe(
-    //     {         
-    //       next: data => {
-    //         this.uRole = data.Role;
-    //         console.log(data.Role)
-    //         if (this.uRole === 'admin')
-    //         {
-    //           this.router.navigate(['/admin']);
-    //         }
-    //         else
-    //         {
-    //           this.router.navigate(['/customer']);
-    //         }
-    //       },
-    //       error(err) {
-    //         alert(err.message);
-    //       },
-    //     }
-    //   );
-    // }
 
     this.loginObj.Email = this.loginForm.value.email;
     this.loginObj.Password = this.loginForm.value.password;
-    console.log(this.loginObj);
+    //console.log(this.loginObj);
     this.auth.login(this.loginObj).subscribe(
       {         
         next: data => {
-          //this.uRole = data.Role;
-          console.log(data.response);
-          // if (this.uRole === 'admin')
-          // {
-          //   this.router.navigate(['/admin']);
-          // }
-          // else
-          // {
-          //   this.router.navigate(['/customer']);
-          // }
+          //console.log(data.response);
+          this.auth.setTemporyToken(data.response);
+          const token = this.jwtHelper.decodeToken(localStorage.getItem('temporyToken')!);
+          const token1 = localStorage.getItem('temporyToken')!;
+          console.log(token.Role);
+          if (token.Role === 'Admin')
+          {
+            this.auth.setAdminToken(token1);
+            this.auth.removeTemporyToken();
+            this.router.navigate(['/admin']);
+          }
+          if (token.Role === 'Customer')
+          {
+            this.auth.setCustomerToken(token1);
+            this.auth.removeTemporyToken();
+            this.router.navigate(['/customer']);
+          }
         },
         error(err) {
-          alert(err.message);
-          console.log(err.status);
+          if(err.status === 404)
+          {
+            alert("Username or Password is incorrect");
+          }
+          else 
+          {
+            alert(err.message);
+            console.log(err.status);
+          }         
         },
       }
     );
