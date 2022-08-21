@@ -22,8 +22,11 @@
                         <button [disabled]="loginForm.invalid" type="submit" class="btn btn-primary">Login</button>
                         <input autocomplete="false" name="hidden" type="text" style="display:none;">
                       </form>
-                      <div class="card-footer text-right">
-                        <small><a routerLink="../register">Register</a></small>
+                      <div class="card-footer text-right mt-2">
+                        <small>
+                            <a routerLink="../register" style="padding-right: 50px">Register</a>
+                            <a routerLink="../forgotPassword">Forgot Password</a>
+                        </small>
                     </div>
                 </form>
             </div>

@@ -78,6 +78,15 @@ export class CategoryProductService {
     return this.http.put<any>(`${this.baseURL}`+"changeCartItemStatus/" + customerId,{headers});
   }
 
+  sendInvoice(customerName: string, address: string, zip: string, total: number)
+  {
+    const token = localStorage.getItem('customerToken');
+    let headers = new HttpHeaders()
+          .set('Authorization', 'Bearer ' + token); 
+    
+    return this.http.post<any>(`${this.baseURL}`+"sendInvoice/" + customerName + "/" + address + "/" + zip + "/" + total, {headers});
+  }
+
   getPurchasedCartItems(): any
   {
     const token1 = this.jwtHelper.decodeToken(localStorage.getItem('customerToken')!);

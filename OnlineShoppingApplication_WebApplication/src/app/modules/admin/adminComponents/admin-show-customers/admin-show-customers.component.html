@@ -26,7 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let each of eachCustomer">
+                        <tr *ngFor="let each of eachCustomer"  (click)="showPurchaseHistory(each.id)" data-bs-toggle="modal" data-bs-target="#productModal" data-bs-whatever="@getbootstrap">
                             <td class="col-md-1">{{each.id}}</td>
                             <td class="col-md-2">{{each.customer.title + " " + each.customer.firstName + " " + each.customer.lastName}}</td>
                             <td class="col-md-1">{{each.customer.gender}}</td>
@@ -40,6 +40,47 @@
         </div>
     </div>
     
+</div>
+
+<div class="modal fade modal-xl" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productModalLabel">Purchase History</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <table class="table table-hover table-responsive-md">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>DatePurchased</th>
+                    <th>Total</th>                        
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="eachCartProduct.length == 0">
+                    <td class="col-md-12">No Purchase has been done by this user</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let each of eachCartProduct"  (click)="showPurchaseHistory(each.id)" data-bs-toggle="modal" data-bs-target="#productModal" data-bs-whatever="@getbootstrap">
+                    <td class="col-md-1">{{each.customerId}}</td>
+                    <td class="col-md-5">{{each.product.name}}</td>
+                    <td class="col-md-2">Rs. {{each.price}}</td>
+                    <td class="col-md-1">{{each.quantity}}</td>                               
+                    <td class="col-md-2">{{each.datePurchased}}</td>
+                    <td class="col-md-2">Rs.{{each.price * each.quantity}}</td>                 
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
 </div>
 
 

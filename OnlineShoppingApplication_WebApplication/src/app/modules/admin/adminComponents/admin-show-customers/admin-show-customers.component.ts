@@ -11,6 +11,7 @@ export class AdminShowCustomersComponent implements OnInit {
   constructor(private adminCategoryProduct: AdminCategoryProductServiceService) { }
 
   eachCustomer: any = [];
+  eachCartProduct: any = [];
 
   ngOnInit(): void {
     this.getAllCustomers();
@@ -64,6 +65,26 @@ export class AdminShowCustomersComponent implements OnInit {
         }
       });
     }
+  }
+
+  showPurchaseHistory(id: string){
+    console.log(id);
+    this.adminCategoryProduct.getPurchasedCartItemsOfCustomer(id).subscribe({
+      next: (data: any) => {
+        this.eachCartProduct = data;
+      },
+      error(err: { status: number; message: any; }) {
+        if(err.status === 404)
+        {
+          alert("Cart unavailable");
+        }
+        else 
+        {
+          alert(err.message);
+          console.log(err.status);
+        }
+      }
+    });
   }
 
 }

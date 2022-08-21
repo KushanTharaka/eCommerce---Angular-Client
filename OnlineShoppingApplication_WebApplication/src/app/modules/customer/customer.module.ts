@@ -9,6 +9,7 @@ import { CustomerNavbarComponent } from './customerComponents/customer-navbar/cu
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomerPurchaseHistoryComponent } from './customerComponents/customer-purchase-history/customer-purchase-history.component';
 import { CustomerCheckoutComponent } from './customerComponents/customer-checkout/customer-checkout.component';
+import { CustomerFooterComponent } from './customerComponents/customer-footer/customer-footer.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { CustomerCheckoutComponent } from './customerComponents/customer-checkou
     CustomerDashboardComponent,
     CustomerNavbarComponent,
     CustomerPurchaseHistoryComponent,
-    CustomerCheckoutComponent
+    CustomerCheckoutComponent,
+    CustomerFooterComponent
   ],
   imports: [
     CommonModule,

@@ -43,11 +43,9 @@ export class LoginPageComponent implements OnInit {
 
     this.loginObj.Email = this.loginForm.value.email;
     this.loginObj.Password = this.loginForm.value.password;
-    //console.log(this.loginObj);
     this.auth.login(this.loginObj).subscribe(
       {         
         next: data => {
-          //console.log(data.response);
           this.auth.setTemporyToken(data.response);
           const token = this.jwtHelper.decodeToken(localStorage.getItem('temporyToken')!);
           const token1 = localStorage.getItem('temporyToken')!;
@@ -80,5 +78,4 @@ export class LoginPageComponent implements OnInit {
     );
 
   }
-
 }

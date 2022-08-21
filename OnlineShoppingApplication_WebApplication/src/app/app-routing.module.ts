@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
@@ -9,6 +10,7 @@ import { AuthCustomerGuard } from './guards/customerGuard/auth-customer.guard';
 const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
   {path: 'register', component: RegisterPageComponent},
+  {path: 'forgotPassword', component: ForgotPasswordComponent},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'admin',
     canActivate: [AuthAdminGuard], 

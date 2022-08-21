@@ -8,6 +8,7 @@ import { AdminNavbarComponent } from './adminComponents/admin-navbar/admin-navba
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminCategoriesControlComponent } from './adminComponents/admin-categories-control/admin-categories-control.component';
 import { AdminShowCustomersComponent } from './adminComponents/admin-show-customers/admin-show-customers.component';
+import { AdminFooterComponent } from './adminComponents/admin-footer/admin-footer.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AdminShowCustomersComponent } from './adminComponents/admin-show-custom
     AdminProductsControlComponent,
     AdminNavbarComponent,
     AdminCategoriesControlComponent,
-    AdminShowCustomersComponent
+    AdminShowCustomersComponent,
+    AdminFooterComponent
   ],
   imports: [
     CommonModule,

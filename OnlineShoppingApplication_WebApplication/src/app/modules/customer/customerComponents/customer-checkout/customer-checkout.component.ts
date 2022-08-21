@@ -86,7 +86,8 @@ export class CustomerCheckoutComponent implements OnInit {
       this.categoryProduct.purchaseCartItems(token.CustomerId).subscribe(
         {         
           next: data => {
-            console.log(data);
+            //console.log(data);
+            this.sendEmail(token);
             this.router.navigate(['customer/customerPurchaseHistory']);
             alert("Items Purchased Succesfully!")
           },
@@ -103,6 +104,11 @@ export class CustomerCheckoutComponent implements OnInit {
           },
         }
       );
+  }
+
+  sendEmail(token: any){
+    let name = token.Title + " " + token.FirstName + " " + token.LastName; 
+    this.categoryProduct.sendInvoice(name, token.Address, token.PostalCode, this.totalPrice+150).subscribe();
   }
 
 }

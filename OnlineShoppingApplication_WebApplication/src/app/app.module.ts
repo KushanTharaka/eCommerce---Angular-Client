@@ -10,13 +10,15 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from "@auth0/angular-jwt";
 import { ReactiveFormsModule } from '@angular/forms';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

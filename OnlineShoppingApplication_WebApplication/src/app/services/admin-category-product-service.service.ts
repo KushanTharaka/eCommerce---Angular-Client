@@ -88,4 +88,9 @@ export class AdminCategoryProductServiceService {
   {
     return this.http.get<any>(`${this.baseURL}`+"getSearchedCustomers/" + searchTerm);
   }
+
+  getPurchasedCartItemsOfCustomer(Id: string): any
+  {
+    return this.http.get<any>(`${this.baseURL}`+"purchasedItems/" + Id);
+  }
 }
