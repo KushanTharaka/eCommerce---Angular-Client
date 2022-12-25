@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { CategoryProductService } from 'src/app/services/category-product.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-customer-purchase-history',
@@ -8,7 +10,8 @@ import { CategoryProductService } from 'src/app/services/category-product.servic
 })
 export class CustomerPurchaseHistoryComponent implements OnInit {
 
-  constructor(private categoryProduct: CategoryProductService) { }
+  constructor(private categoryProduct: CategoryProductService,
+    private toastr: ToastrService) { }
 
   eachCartProduct: any = [];
 
@@ -22,17 +25,28 @@ export class CustomerPurchaseHistoryComponent implements OnInit {
     this.categoryProduct.getPurchasedCartItems().subscribe({
       next: (data: any) => {
         this.eachCartProduct = data;
-        console.log(this.eachCartProduct);
       },
       error(err: { status: number; message: any; }) {
         if(err.status === 404)
         {
-          alert("Cart unavailable");
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Items not Found!',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
         else 
         {
-          alert(err.message);
-          console.log(err.status);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Something went wrong!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(err.message);
         }
       }
     });

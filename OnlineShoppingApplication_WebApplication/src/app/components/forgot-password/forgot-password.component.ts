@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { LoginDetails_Model } from 'src/app/services/models/login.model';
 import { RegisterAuthService } from 'src/app/services/register-auth.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,7 +20,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(private regAuth: RegisterAuthService,
     private router: Router, 
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService) { }
 
   randomNum: number = 1;
   minValue: number = 11111111;
@@ -46,26 +49,42 @@ export class ForgotPasswordComponent implements OnInit {
     min = Math.ceil(min);
 	  max = Math.floor(max);
 	  this.randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-    //console.log(this.randomNum, email);
 
     this.loginObj.Email = email;
     this.loginObj.Password = "PW_not_Needed";
-    console.log(this.loginObj);
     this.regAuth.checkAccountAvailability(this.loginObj).subscribe({
       next: (data: any) => {
         this.Id = data.response;
-        this.regAuth.sendOtpCode(this.randomNum).subscribe();
-        console.log(data);
+        this.regAuth.sendOtpCode(this.randomNum, this.loginObj).subscribe({
+          next: (data: any) => {
+            this.toastr.success('OTP sent to the Email Succesfully', 'OTP');
+          },
+          error: (err: { status: number; message: any; }) => {
+            this.toastr.error('Try Again', 'OTP');
+          }
+        });
       },
       error(err: { status: number; message: any; }) {
         if(err.status === 404)
         {
-          alert("User Doesn't Exist!");
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'User Does not Exist!',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
         else 
         {
-          alert(err.message);
-          console.log(err.status);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Something went wrong!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(err.message);
         }
       }
     });
@@ -78,23 +97,47 @@ export class ForgotPasswordComponent implements OnInit {
       this.regAuth.updatePassword(this.Id, this.changePasswordForm.value.conPwd).subscribe(
         {         
           next: data => {
-            alert("Password updated successfully");
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Password updated successfully',
+              showConfirmButton: false,
+              timer: 1500
+            });
             this.router.navigate(['/login']);      
           },
           error(err) {
             if(err.status === 404)
             {
-              alert("Already exists");
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Already exists!',
+                showConfirmButton: false,
+                timer: 1500
+              });
             }
             else if(err.status === 400)
             {
-              alert("Bad Request");
-              console.log(err.status);
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Bad Request',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              console.log(err.message);
             } 
             else 
             {
-              alert(err.message);
-              console.log(err.status);
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Something went wrong!',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              console.log(err.message);
             }         
           },
         }
@@ -102,8 +145,14 @@ export class ForgotPasswordComponent implements OnInit {
 
     }
     else{     
-      console.log("otp is incorrect!");
-      alert("otp is incorrect!");
+      console.log("OTP is incorrect!");
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'OTP is incorrect!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
     
   }
