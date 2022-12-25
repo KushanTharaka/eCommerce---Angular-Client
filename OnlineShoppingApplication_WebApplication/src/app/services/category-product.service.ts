@@ -78,13 +78,22 @@ export class CategoryProductService {
     return this.http.put<any>(`${this.baseURL}`+"changeCartItemStatus/" + customerId,{headers});
   }
 
-  sendInvoice(customerName: string, address: string, zip: string, total: number)
+  // sendInvoice(customerName: string, address: string, zip: string, total: number)
+  // {
+  //   const token = localStorage.getItem('customerToken');
+  //   let headers = new HttpHeaders()
+  //         .set('Authorization', 'Bearer ' + token);  
+    
+  //   return this.http.post<any>(`${this.baseURL}`+"sendInvoice/" + customerName + "/" + address + "/" + zip + "/" + total, {headers});
+  // }
+
+  sendInvoice(invoiceDetailsObj: any)
   {
     const token = localStorage.getItem('customerToken');
     let headers = new HttpHeaders()
-          .set('Authorization', 'Bearer ' + token); 
+          .set('Authorization', 'Bearer ' + token);  
     
-    return this.http.post<any>(`${this.baseURL}`+"sendInvoice/" + customerName + "/" + address + "/" + zip + "/" + total, {headers});
+    return this.http.post<any>(`${this.baseURL}`+"sendInvoice/", invoiceDetailsObj, {headers});
   }
 
   getPurchasedCartItems(): any

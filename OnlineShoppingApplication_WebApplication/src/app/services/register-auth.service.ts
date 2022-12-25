@@ -21,9 +21,9 @@ export class RegisterAuthService {
     return this.http.post<any>(`${this.baseURL}`+"pwdChangeAccCheck", loginObj);
   }
 
-  sendOtpCode(otp: any)
+  sendOtpCode(otp: any, loginObj: any)
   {
-    return this.http.post<any>(`${this.baseURL}`+"sendOTP/" + otp, otp);
+    return this.http.post<any>(`${this.baseURL}`+"sendOTP/" + otp, loginObj);
   }
 
   updatePassword(Id: string, password: string)

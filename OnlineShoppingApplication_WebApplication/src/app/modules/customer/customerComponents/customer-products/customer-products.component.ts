@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
 import { CategoryProductService } from 'src/app/services/category-product.service';
 import { CartItemDetails_Model } from 'src/app/services/models/cartItem.model';
 import { ProductDetails_Model } from 'src/app/services/models/product.model';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-customer-products',
@@ -15,7 +17,10 @@ export class CustomerProductsComponent implements OnInit {
   public productForm !: FormGroup;
   public productObj  = new ProductDetails_Model();
   public cartItemObj =  new CartItemDetails_Model();
-  constructor(private categoryProduct: CategoryProductService, private formBuilder: FormBuilder, private jwtHelper: JwtHelperService) { }
+  constructor(private categoryProduct: CategoryProductService, 
+    private formBuilder: FormBuilder, 
+    private jwtHelper: JwtHelperService,
+    private toastr: ToastrService) { }
 
   eachProduct: any = [];
   eachCategory: any = [];
@@ -39,17 +44,28 @@ export class CustomerProductsComponent implements OnInit {
     this.categoryProduct.getAllProducts().subscribe({
       next: (data: any) => {
         this.eachProduct = data;
-        console.log(this.eachProduct);
       },
       error(err: { status: number; message: any; }) {
         if(err.status === 404)
         {
-          alert("Products unavailable");
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Products unavailable!',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
         else 
         {
-          alert(err.message);
-          console.log(err.status);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Something went wrong!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(err.message);
         }
       }
     });
@@ -60,17 +76,28 @@ export class CustomerProductsComponent implements OnInit {
     this.categoryProduct.getAllCategories().subscribe({
       next: (data: any) => {
         this.eachCategory = data;
-        console.log(this.eachCategory);
       },
       error(err: { status: number; message: any; }) {
         if(err.status === 404)
         {
-          alert("Category unavailable");
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Category unavailable!',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
         else 
         {
-          alert(err.message);
-          console.log(err.status);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Something went wrong!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(err.message);
         }
       }
     });
@@ -81,17 +108,28 @@ export class CustomerProductsComponent implements OnInit {
     this.categoryProduct.getCategory(id).subscribe({
       next: (data: any) => {
         this.eachProduct = data;
-        console.log(this.eachProduct);
       },
       error(err: { status: number; message: any; }) {
         if(err.status === 404)
         {
-          alert("Products unavailable");
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Products unavailable!',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
         else 
         {
-          alert(err.message);
-          console.log(err.status);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Something went wrong!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(err.message);
         }
       }
     });
@@ -111,16 +149,21 @@ export class CustomerProductsComponent implements OnInit {
     this.productObj.images = each.images;
     this.productObj.details = each.details;
     this.productObj.price = each.price;
-    this.productObj.quantity = each.quantity;
-    
-    console.log(each);   
+    this.productObj.quantity = each.quantity;  
   }
 
   onSubmit(): void{
 
     if(this.productForm.value.Qty <= 0)
     {
-      alert("Quantity is not valid");
+      this.toastr.warning('Quantity is not valid!', 'Check');
+      // Swal.fire({
+      //   position: 'top-end',
+      //   icon: 'error',
+      //   title: 'Quantity is not valid!',
+      //   showConfirmButton: false,
+      //   timer: 1500
+      // });
     }
     else
     {
@@ -130,23 +173,39 @@ export class CustomerProductsComponent implements OnInit {
       this.cartItemObj.ProductID = this.productForm.value.productId;
       this.cartItemObj.Price = this.productForm.value.productPrice;
       this.cartItemObj.Quantity = this.productForm.value.Qty;
-      console.log(this.cartItemObj);
 
       this.categoryProduct.postCartItem(this.cartItemObj).subscribe(
         {         
           next: data => {
-            console.log(data);
-            alert(this.productObj.name + " Added to Cart");
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: this.productObj.name + ' Added to Cart',
+              showConfirmButton: false,
+              timer: 1500
+            });
           },
           error(err) {
             if(err.status === 404)
             {
-              alert("Item already exists");
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Item already exists!',
+                showConfirmButton: false,
+                timer: 1500
+              });
             }
             else 
             {
-              alert(err.message);
-              console.log(err.status);
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Something went wrong!',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              console.log(err.message);
             }         
           },
         }
@@ -165,17 +224,28 @@ export class CustomerProductsComponent implements OnInit {
       this.categoryProduct.getSearchedProducts(searchTerm).subscribe({
         next: (data: any) => {
           this.eachProduct = data;
-          console.log(this.eachProduct);
         },
         error(err: { status: number; message: any; }) {
           if(err.status === 404)
           {
-            alert("Products unavailable");
+            Swal.fire({
+              position: 'top-end',
+              icon: 'info',
+              title: 'Products unavailable!',
+              showConfirmButton: false,
+              timer: 1500
+            });
           }
           else 
           {
-            alert(err.message);
-            console.log(err.status);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Something went wrong!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            console.log(err.message);
           }
         }
       });

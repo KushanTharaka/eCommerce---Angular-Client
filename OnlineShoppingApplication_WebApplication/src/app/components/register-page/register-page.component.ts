@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LoginAuthService } from 'src/app/services/login-auth.service';
 import { CustomerRegisterDetails_Model } from 'src/app/services/models/customerRegister.model';
 import { RegisterAuthService } from 'src/app/services/register-auth.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-register-page',
@@ -59,19 +60,37 @@ export class RegisterPageComponent implements OnInit {
       {         
         next: data => {
           
-          alert("Account created successfully");
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Account created successfully!',
+            showConfirmButton: false,
+            timer: 1500
+          });
           this.router.navigate(['/login']);
 
         },
         error(err) {
-          if(err.status === 404)
+          if(err.status === 409)
           {
-            alert("Email already exists");
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Email already exists!',
+              showConfirmButton: false,
+              timer: 1500
+            });
           }
           else 
           {
-            alert(err.message);
-            console.log(err.status);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Something went wrong!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            console.log(err.message);
           }         
         },
       }

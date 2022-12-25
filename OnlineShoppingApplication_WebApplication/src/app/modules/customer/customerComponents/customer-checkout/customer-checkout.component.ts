@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
 import { CategoryProductService } from 'src/app/services/category-product.service';
+import { InvoiceDetails_Model } from 'src/app/services/models/invoiceDetails.model';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-customer-checkout',
@@ -12,11 +15,13 @@ import { CategoryProductService } from 'src/app/services/category-product.servic
 export class CustomerCheckoutComponent implements OnInit {
 
   public billingForm !: FormGroup;
+  public invoiceObj = new InvoiceDetails_Model();
 
   constructor(private categoryProduct: CategoryProductService, 
     private formBuilder: FormBuilder, 
     private jwtHelper: JwtHelperService, 
-    private router: Router) { }
+    private router: Router,
+    private toastr: ToastrService) { }
 
   eachCartProduct: any = [];
   totalPrice: number = 0;
@@ -57,12 +62,24 @@ export class CustomerCheckoutComponent implements OnInit {
       error(err: { status: number; message: any; }) {
         if(err.status === 404)
         {
-          alert("Cart unavailable");
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Cart unavailable!',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
         else 
         {
-          alert(err.message);
-          console.log(err.status);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Something went wrong!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(err.message);
         }
       }
     });
@@ -86,20 +103,31 @@ export class CustomerCheckoutComponent implements OnInit {
       this.categoryProduct.purchaseCartItems(token.CustomerId).subscribe(
         {         
           next: data => {
-            //console.log(data);
             this.sendEmail(token);
             this.router.navigate(['customer/customerPurchaseHistory']);
-            alert("Items Purchased Succesfully!")
+            this.toastr.success('Items Purchased Succesfully!', 'Thank you');
           },
           error(err) {
             if(err.status === 404)
             {
-              alert("Items not Found!");
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Items not Found!',
+                showConfirmButton: false,
+                timer: 1500
+              });
             }
             else 
             {
-              alert(err.message);
-              console.log(err.status);
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Something went wrong!',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              console.log(err.message);
             }         
           },
         }
@@ -108,7 +136,15 @@ export class CustomerCheckoutComponent implements OnInit {
 
   sendEmail(token: any){
     let name = token.Title + " " + token.FirstName + " " + token.LastName; 
-    this.categoryProduct.sendInvoice(name, token.Address, token.PostalCode, this.totalPrice+150).subscribe();
+
+    this.invoiceObj.Email = token.Email;
+    this.invoiceObj.Name = name;
+    this.invoiceObj.Address = token.Address;
+    this.invoiceObj.ZipCode = token.PostalCode;
+    this.invoiceObj.Total = (this.totalPrice+150).toString();
+
+    //this.categoryProduct.sendInvoice(name, token.Address, token.PostalCode, this.totalPrice+150).subscribe();
+    this.categoryProduct.sendInvoice(this.invoiceObj).subscribe();
   }
 
 }
