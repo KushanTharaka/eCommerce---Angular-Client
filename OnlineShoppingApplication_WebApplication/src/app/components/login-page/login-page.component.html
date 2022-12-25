@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card" style="box-shadow: 5px 10px 18px #888888;">
+                <div class="text-center">
+                    <h1>Login</h1>
+                    <h6>Hi, Welcome back!</h6>
+                </div>
+                <form>
+                    <form [formGroup]="loginForm" autocomplete="off" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                          <label for="emailField" class="form-label">Email address</label>
+                          <input type="email" class="form-control" formControlName="email" id="emailField" aria-describedby="emailHelp">
+                          <!--<small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">Email is required!</small>-->
+                          <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">Enter a valid email!</small>
+                        </div>
+                        <div class="mb-3">
+                          <label for="passwordField" class="form-label">Password</label>
+                          <input type="password" class="form-control" formControlName="password" id="passwordField">
+                          <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">Password is required!</small>
+                        </div>
+                        <button [disabled]="loginForm.invalid" type="submit" class="btn btn-primary">Login</button>
+                        <input autocomplete="false" name="hidden" type="text" style="display:none;">
+                      </form>
+                      <div class="card-footer text-right mt-2">
+                        <small>
+                            <a routerLink="../register" style="padding-right: 50px">Register</a>
+                            <a routerLink="../forgotPassword">Forgot Password</a>
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="jumbotron pt-3">
+    <h1 class="display-4 text-center">Customers</h1>
+</div>
+
+<div class="section m-5">
+    <div class="row">
+        
+        <div class="col-md-12">
+            <div class="input-group mb-4">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" #searchTerm/>
+                <button type="button" (click)="searchCustomer(searchTerm.value)" class="btn btn-outline-primary">search</button>
+            </div>
+        </div>
+
+        <div class="col-md-12">         
+            <div style="box-shadow: 5px 10px 18px #888888;" class="Item bg-white rounded-3">
+                <table class="table table-hover table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Zip Code</th>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let each of eachCustomer"  (click)="showPurchaseHistory(each.id)" data-bs-toggle="modal" data-bs-target="#productModal" data-bs-whatever="@getbootstrap">
+                            <td class="col-md-1">{{each.id}}</td>
+                            <td class="col-md-2">{{each.customer.title + " " + each.customer.firstName + " " + each.customer.lastName}}</td>
+                            <td class="col-md-1">{{each.customer.gender}}</td>
+                            <td class="col-md-2">{{each.email}}</td>                               
+                            <td class="col-md-5">{{each.customer.address}}</td>
+                            <td class="col-md-1">{{each.customer.zipCode}}</td>                 
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<div class="modal fade modal-xl" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productModalLabel">Purchase History</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <table class="table table-hover table-responsive-md">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>DatePurchased</th>
+                    <th>Total</th>                        
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="eachCartProduct.length == 0">
+                    <td class="col-md-12">No Purchase has been done by this user</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let each of eachCartProduct"  (click)="showPurchaseHistory(each.id)" data-bs-toggle="modal" data-bs-target="#productModal" data-bs-whatever="@getbootstrap">
+                    <td class="col-md-1">{{each.customerId}}</td>
+                    <td class="col-md-5">{{each.product.name}}</td>
+                    <td class="col-md-2">Rs. {{each.price}}</td>
+                    <td class="col-md-1">{{each.quantity}}</td>                               
+                    <td class="col-md-2">{{each.datePurchased}}</td>
+                    <td class="col-md-2">Rs.{{each.price * each.quantity}}</td>                 
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+
+
+

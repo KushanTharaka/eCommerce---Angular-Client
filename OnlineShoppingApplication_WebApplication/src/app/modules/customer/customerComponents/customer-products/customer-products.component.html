@@ -1,0 +1,180 @@
+<!-- <div class="container mt-1">
+  <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="2000">
+        <img src="https://images.unsplash.com/photo-1596236100223-f3c656de3038?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5 style="color:white">Snap Buy</h5>
+          <p style="color:white">The place for your needs</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5 style="color:white">Snap Buy</h5>
+          <p style="color:white">Take a look around</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img src="https://images.unsplash.com/photo-1472591651607-70e2d88ae3c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=761&q=80" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5 style="color:white">Snap Buy</h5>
+          <p style="color:white">Welcome Customer!</p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div> -->
+
+<div class="m-5">
+  <div class="col-md-12">
+    <div class="input-group mb-4">
+        <input type="search" class="form-control rounded" placeholder="Search Products" aria-label="Search" aria-describedby="search-addon" #searchTerm/>
+        <button type="button" (click)="searchProducts(searchTerm.value)" class="btn btn-outline-primary">search</button>
+    </div>
+  </div>
+</div>
+
+<hr> 
+
+<div>
+  <div class="grid">
+    <button type="button" (click)="getAllProducts()" class="btn btn-light catButton" id="allCategoryButton">All Products</button>
+    <div *ngFor="let eachCat of eachCategory">
+      <button type="button" (click)="getCategoryProducts(eachCat.categoryId)" class="btn btn-light catButton" id="categoryButton">{{eachCat.name}}</button>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="container mt-5 mb-5">
+  <div class="row g-3">
+      <div class="col-12 col-md-6 col-lg-3" (click)="openProduct(each)" *ngFor="let each of eachProduct" data-bs-toggle="modal" data-bs-target="#productModal" data-bs-whatever="@getbootstrap">
+          <div class="card h-100">
+              <img [src]="each.images" class="card-img-top">
+              <div class="card-body">
+                <h5 class="card-title">{{each.name}}</h5>
+                <!-- <p class="card-text">{{each.details}}</p> -->
+                <input type="hidden" id="itemID" [value]="each.id">
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">Rs. {{each.price}}</small>
+              </div>
+          </div>        
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3" *ngIf="eachProduct.length == 0">
+        <div class="card h-100">
+            <img src="https://d1gnfademejmj4.cloudfront.net/1dfbda6d-076b-4699-a6d6-0d34f6b44473/images/404.png" style="background-size: cover;" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Sorry!</h5>
+              <p class="card-text">Search Not Found</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Please Try again</small>
+            </div>
+        </div>        
+    </div>
+  </div>
+
+</div>
+
+<div class="modal fade " id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productModalLabel">{{productObj.name}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form [formGroup]="productForm" autocomplete="off" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          
+            <!-- <div class="row">
+                <div class="col-md-6">
+                    <img style="aspect-ratio: 16/9;" [src]="productObj.images" class="card-img-top">
+                </div>
+                <div class="col-md-6">
+                    <label for="productDetails" class="col-form-label">Details:</label>
+                    <label type="text" class="form-control" id="productDetails" style="height: auto;">{{productObj.details}}</label>
+                </div>
+            </div> -->
+            <div class="row">
+              <img style="aspect-ratio: 16/9;" [src]="productObj.images" class="card-img-top">
+            </div>
+            <div class="row mt-2">
+              <label type="text" class="form-control" id="productDetails" style="height: auto;">{{productObj.details}}</label>
+            </div>
+            <div class="row">
+                <div class="col-md-6">                   
+                    <div class="mb-3 mt-4">
+                        <label for="quantity" class="col-form-label">Quantity:</label>
+                        <div style="margin-left: 7px" class="btn-group" role="group">
+                            <!-- <button type="button" class="btn btn-secondary" style="margin-left: 5px">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                  <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                </svg>
+                              </button> -->
+                            <input type="number" formControlName="Qty" class="form-control" style="max-width: 70px; max-height: 50px;" id="qtyField" required><!--<p style="padding-top: 8px; padding-left: 8px;">/ {{productObj.quantity}}</p> -->
+                            <!-- <small *ngIf="innitialQty < 1 || innitialQty < productObj.quantity || productForm.get('Qty')?.invalid && productForm.get('Qty')?.touched" class="text-danger">Enter valid Quantity!</small> -->
+                            <!-- <button type="button" class="btn btn-secondary" style="margin-right: 5px">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </button> -->
+                            <input type="hidden" formControlName="productId" [value]="productObj.productId">
+                            <input type="hidden" formControlName="productPrice" [value]="productObj.price">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-4">
+                    <div class="col-md-6">
+                        <label for="productPrice" class="col-form-label">Price:</label>
+                        <label type="text" class="form-control" id="productPrice" style="height: auto;">Rs. {{productObj.price}}</label>
+                    </div>
+                </div>
+            </div>
+            <small *ngIf="productForm.value.Qty < 1 ||  productForm.get('Qty')?.invalid && productForm.get('Qty')?.touched" class="text-danger">Enter valid Quantity!</small>                                     
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button [disabled]="productForm.invalid" type="submit" data-bs-dismiss="modal" class="btn btn-primary">Add to Cart</button> 
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div class="container mt-5">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col-4 mt-3 mb-5" (click)="openProduct(each)" *ngFor="let each of eachProduct" data-bs-toggle="modal" data-bs-target="#productModal" data-bs-whatever="@getbootstrap">
+          <div class="card h-100">
+            <img [src]="each.images" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">{{each.name}}</h5>
+              <p class="card-text">{{each.details}}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Rs. {{each.price}}</small>
+            </div>
+          </div>
+          <input type="hidden" id="itemID" [value]="each.id">
+        </div>       
+      </div>
+</div> -->
